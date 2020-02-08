@@ -27,7 +27,7 @@ class NNClassifier:
         y = tf.cast(np.array(y_train), tf.int64)
         return x,y
 
-    def compile(self, model, optimizer, loss, accuracy_metric):
+    def compile(self, optimizer, loss, accuracy_metric):
         self.model.compile(optimizer= optimizer,
                            loss= loss,
                            metrics= accuracy_metric)
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
     model = NNClassifier(3, 300, 200, 50, 2)
 
-    model.compile(model, optimizer='adam',
+    model.compile(optimizer='adam',
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
 
