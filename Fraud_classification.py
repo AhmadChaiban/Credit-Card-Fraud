@@ -11,7 +11,7 @@ class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
 
         self.model = keras.Sequential([
-            keras.layers.Dense(units = input),
+            keras.layers.Dense(units = input, input_dim = input, activation = 'relu'),
             keras.layers.Dense(units=dense1, activation='relu'),
             keras.layers.Dense(units=dense2, activation='relu'),
             keras.layers.Dense(units=dense3, activation='relu'),
@@ -34,10 +34,13 @@ class NNClassifier:
 
     def train(self, X_train, y_train, epochs):
         X_train, y_train = self.convert_to_tensor(X_train, y_train)
+        print(X_train.shape)
         data = self.data_set_creator(X_train, y_train, 1)
+        print(data.shape)
         history = self.model.fit(data,
-                                 epochs = epochs)
-                                 # validation_split = validation_split)
+                                 epochs = epochs,
+                                 batch_size = 32,
+                                 validation_split=0.2)
         return history
 
     def prediction_adjustor(self, y_pred):
@@ -55,7 +58,8 @@ class NNClassifier:
         return accuracy_score(np.array(y_test).T, y_pred_adjusted)
 
     def plot_history(self, history):
-        plt.plot(history)
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
         plt.show()
 
 if __name__ == '__main__':
@@ -66,19 +70,22 @@ if __name__ == '__main__':
     fraud_df_Y = fraud_df['Class']
     ## SMOTE Oversampling
     sm = SMOTE(random_state = 42)
-    X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
 
-    X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(fraud_df_X, fraud_df_Y, test_size=0.20, random_state=42)
 
-    model = NNClassifier(3, 300, 200, 50, 2)
+    X_train_res, y_train_res = sm.fit_resample(X_train, y_train)
+
+    model = NNClassifier(30, 300, 200, 50, 2)
 
     model.compile(optimizer='adam',
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
 
-    history = model.train(X_train, y_train, 20)
+    history = model.train(X_train_res, y_train_res, 5)
     accuracy = model.predict(X_test, y_test)
     print(accuracy)
+    model.plot_history(history)
+
 
 
 
