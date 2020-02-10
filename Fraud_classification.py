@@ -18,9 +18,9 @@ class NNClassifier:
             keras.layers.Dense(units=dense4, activation='softmax')
         ])
 
-    def data_set_creator(self, X_train, y_train, number_of_classes):
-        y_train = tf.one_hot(y_train, depth=number_of_classes)
-        return tf.data.Dataset.from_tensor_slices((X_train, y_train)).shuffle(len(y_train)).batch(128)
+    # def data_set_creator(self, X_train, y_train, number_of_classes):
+    #     y_train = tf.one_hot(y_train, depth=number_of_classes)
+    #     return tf.data.Dataset.from_tensor_slices((X_train, y_train)).shuffle(len(y_train)).batch(128)
 
     def convert_to_tensor(self, X_train, y_train):
         x = tf.cast(np.array(X_train), tf.float32)
@@ -35,9 +35,10 @@ class NNClassifier:
     def train(self, X_train, y_train, epochs):
         X_train, y_train = self.convert_to_tensor(X_train, y_train)
         print(X_train.shape)
-        data = self.data_set_creator(X_train, y_train, 1)
-        print(data.shape)
-        history = self.model.fit(data,
+        # data = self.data_set_creator(X_train, y_train, 1)
+        # print(data.shape)
+        history = self.model.fit(x = X_train,
+                                 y = y_train,
                                  epochs = epochs,
                                  batch_size = 32,
                                  validation_split=0.2)
@@ -71,9 +72,8 @@ if __name__ == '__main__':
     ## SMOTE Oversampling
     sm = SMOTE(random_state = 42)
 
-    X_train, X_test, y_train, y_test = train_test_split(fraud_df_X, fraud_df_Y, test_size=0.20, random_state=42)
-
-    X_train_res, y_train_res = sm.fit_resample(X_train, y_train)
+    X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
+    X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
 
     model = NNClassifier(30, 300, 200, 50, 2)
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
 
-    history = model.train(X_train_res, y_train_res, 5)
+    history = model.train(X_train, y_train, 5)
     accuracy = model.predict(X_test, y_test)
     print(accuracy)
     model.plot_history(history)
