@@ -67,24 +67,31 @@ class NNClassifier:
 if __name__ == '__main__':
     ## Importing the data
     fraud_df = pd.read_csv('creditcard.csv')
+    ## Normalizing the data to avoid misleading the model
+    fraud_df['normalizedAmount'] = StandardScaler().fit_transform(fraud_df['Amount'].values.reshape(-1,1))
+    fraud_df = fraud_df.drop(['Amount'],axis=1)
+    ## Time is irrelevant, as it seemed from the descriptive analysis, so dropping it
+    fraud_df = fraud_df.drop(['Time'],axis=1)
     ## Splitting into X and Y
     fraud_df_X = fraud_df.drop(['Class'], axis = 1)
     fraud_df_Y = fraud_df['Class']
     ## SMOTE Oversampling
     sm = SMOTE(random_state = 42)
-
     X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
     X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
-
-    model = NNClassifier(30, 32, 20, 10, 2)
-
+    ## Defining the classifier
+    model = NNClassifier(29, 32, 20, 10, 2)
+    ## Compoling the model
     model.compile(optimizer='adam',
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
-
+    ## Training and recording history
     history = model.train(X_train, y_train, 20)
+    ## Predicting on the test set
     accuracy = model.predict(X_test, y_test)
+    ## Showing the accuracy of the model
     print(accuracy)
+    ## Plotting the recorded history of training and validation loss
     model.plot_history(history)
 
 
