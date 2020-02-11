@@ -6,6 +6,7 @@ import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler
 
 class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
@@ -40,7 +41,7 @@ class NNClassifier:
         history = self.model.fit(x = X_train,
                                  y = y_train,
                                  epochs = epochs,
-                                 batch_size = 32,
+                                 batch_size = 128,
                                  validation_split=0.2)
         return history
 
@@ -75,13 +76,13 @@ if __name__ == '__main__':
     X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
     X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
 
-    model = NNClassifier(30, 300, 200, 50, 2)
+    model = NNClassifier(30, 32, 20, 10, 2)
 
     model.compile(optimizer='adam',
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
 
-    history = model.train(X_train, y_train, 5)
+    history = model.train(X_train, y_train, 20)
     accuracy = model.predict(X_test, y_test)
     print(accuracy)
     model.plot_history(history)
