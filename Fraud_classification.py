@@ -10,7 +10,6 @@ from sklearn.preprocessing import StandardScaler
 
 class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
-
         self.model = keras.Sequential([
             keras.layers.Dense(units = input, input_dim = input, activation = 'relu'),
             keras.layers.Dense(units=dense1, activation='relu'),
@@ -66,7 +65,9 @@ class NNClassifier:
 
 if __name__ == '__main__':
     ## Importing the data
+    print("Reading from Database...")
     fraud_df = pd.read_csv('creditcard.csv')
+    print(fraud_df.head())
     ## Normalizing the data to avoid misleading the model
     fraud_df['normalizedAmount'] = StandardScaler().fit_transform(fraud_df['Amount'].values.reshape(-1,1))
     fraud_df = fraud_df.drop(['Amount'],axis=1)
