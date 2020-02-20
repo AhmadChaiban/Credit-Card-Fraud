@@ -57,9 +57,14 @@ class NNClassifier:
         y_pred_adjusted = self.prediction_adjustor(y_pred)
         return accuracy_score(np.array(y_test).T, y_pred_adjusted)
 
-    def plot_history(self, history):
+    def plot_loss(self, history):
         plt.plot(history.history['loss'])
         plt.plot(history.history['val_loss'])
+        plt.show()
+
+    def plot_accuracy(self, history):
+        plt.plot(history.history['accuracy'])
+        plt.plot(history.history['val_accuracy'])
         plt.show()
 
 if __name__ == '__main__':
@@ -89,7 +94,8 @@ if __name__ == '__main__':
     ## Showing the accuracy of the model
     print(accuracy)
     ## Plotting the recorded history of training and validation loss
-    model.plot_history(history)
+    model.plot_loss(history)
+    model.plot_accuracy(history)
 
 
 
