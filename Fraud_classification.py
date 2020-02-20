@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 
+from preprocessing import Preprocessor
+
 class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
         self.model = keras.Sequential([
@@ -68,17 +70,14 @@ if __name__ == '__main__':
     print("Reading from Database...")
     fraud_df = pd.read_csv('creditcard.csv')
     print(fraud_df.head())
-    ## Normalizing the data to avoid misleading the model
-    fraud_df['normalizedAmount'] = StandardScaler().fit_transform(fraud_df['Amount'].values.reshape(-1,1))
-    fraud_df = fraud_df.drop(['Amount'],axis=1)
-    ## Time is irrelevant, as it seemed from the descriptive analysis, so dropping it
-    fraud_df = fraud_df.drop(['Time'],axis=1)
-    ## Splitting into X and Y
-    fraud_df_X = fraud_df.drop(['Class'], axis = 1)
-    fraud_df_Y = fraud_df['Class']
-    ## SMOTE Oversampling
-    sm = SMOTE(random_state = 42)
-    X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
+    preprocessor = Preprocessor(fraud_df)
+    ## Normalizing the data and deleting some irrelevant data like time
+    preprocessor.normalize()
+    ## Separating the features from the labels
+    fraud_df_X, fraud_df_Y = preprocessor.split_X_Y()
+    ## Oversampling the data
+    X_res, y_res = preprocessor.ApplySMOTE(42, fraud_df_X, fraud_df_Y)
+    ## Train test split
     X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
     ## Defining the classifier
     model = NNClassifier(29, 32, 20, 10, 2)
