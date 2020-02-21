@@ -6,6 +6,8 @@ from tensorflow import keras
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from preprocessing import Preprocessor
+from tensorflow.keras import optimizers
+from sklearn.metrics import confusion_matrix
 
 class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
@@ -55,7 +57,7 @@ class NNClassifier:
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
-        return accuracy_score(np.array(y_test).T, y_pred_adjusted)
+        return y_pred_adjusted, accuracy_score(np.array(y_test).T, y_pred_adjusted)
 
     def plot_loss(self, history):
         plt.plot(history.history['loss'])
@@ -80,19 +82,23 @@ if __name__ == '__main__':
     ## Oversampling the data
     X_res, y_res = preprocessor.ApplySMOTE(42, fraud_df_X, fraud_df_Y)
     ## Train test split
+    print('Final features for training:')
     X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
+    print(X_train.head())
     ## Defining the classifier
     model = NNClassifier(29, 32, 20, 10, 2)
     ## Compoling the model
-    model.compile(optimizer='adam',
+    model.compile(optimizer= optimizers.SGD(learning_rate = 0.01),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 20)
+    history = model.train(X_train, y_train, 5)
     ## Predicting on the test set
-    accuracy = model.predict(X_test, y_test)
+    y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
     print(accuracy)
+    ## confusion matrix
+    print(confusion_matrix(np.array(y_test).T, y_pred))
     ## Plotting the recorded history of training and validation loss
     model.plot_loss(history)
     model.plot_accuracy(history)
