@@ -18,7 +18,7 @@ class NNClassifier:
             keras.layers.Dense(units=dense3, activation='relu'),
             keras.layers.Dense(units=dense4, activation='softmax')
         ])
-
+        
     # def data_set_creator(self, X_train, y_train, number_of_classes):
     #     y_train = tf.one_hot(y_train, depth=number_of_classes)
     #     return tf.data.Dataset.from_tensor_slices((X_train, y_train)).shuffle(len(y_train)).batch(128)
