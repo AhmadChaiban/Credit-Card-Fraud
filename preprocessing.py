@@ -1,5 +1,7 @@
 from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import StandardScaler
+from sklearn.utils import shuffle
+import numpy as np
 
 class Preprocessor:
     def __init__(self, fraud_df):
@@ -21,3 +23,8 @@ class Preprocessor:
         sm = SMOTE(random_state = random_state)
         X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
         return X_res, y_res
+
+    def Shuffle_data(self, X, y):
+        X, y = shuffle(X, y)
+        return X, y
+
