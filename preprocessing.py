@@ -1,7 +1,7 @@
 from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import shuffle
-import numpy as np
+from imblearn.under_sampling import ClusterCentroids
 
 class Preprocessor:
     def __init__(self, fraud_df):
@@ -23,6 +23,11 @@ class Preprocessor:
         sm = SMOTE(random_state = random_state)
         X_res, y_res = sm.fit_resample(fraud_df_X, fraud_df_Y)
         return X_res, y_res
+
+    def ApplyClusterCentroids(self, random_state, fraud_df_X, fraud_df_Y):
+        cluster_centroids = ClusterCentroids(random_state = 42)
+        X_underSam, y_underSam = cluster_centroids.fit_resample(fraud_df_X, fraud_df_Y)
+        return X_underSam, y_underSam
 
     def Shuffle_data(self, X, y):
         X, y = shuffle(X, y)
