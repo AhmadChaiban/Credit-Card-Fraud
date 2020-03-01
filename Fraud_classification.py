@@ -81,9 +81,11 @@ if __name__ == '__main__':
     fraud_df_X, fraud_df_Y = preprocessor.split_X_Y()
     ## Oversampling the data
     X_res, y_res = preprocessor.ApplySMOTE(42, fraud_df_X, fraud_df_Y)
+    ## Shuffle data
+    X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(X_res, y_res)
     ## Train test split
     print('Final features for training:')
-    X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.20, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(X_train.head())
     ## Defining the classifier
     model = NNClassifier(29, 32, 20, 10, 2)
