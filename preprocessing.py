@@ -9,9 +9,11 @@ class Preprocessor:
 
     def normalize(self):
         ## Normalizing the data to avoid misleading the model
-        self.fraud_df['normalizedAmount'] = StandardScaler().fit_transform(self.fraud_df['Amount'].values.reshape(-1,1))
+        std_scaler = StandardScaler()
+        self.fraud_df['normalizedAmount'] = std_scaler.fit_transform(self.fraud_df['Amount'].values.reshape(-1,1))
         self.fraud_df = self.fraud_df.drop(['Amount'],axis=1)
         ## Time is irrelevant, as it seemed from the descriptive analysis, so dropping it
+        self.fraud_df['normalizedTime'] = std_scaler.fit_transform(self.fraud_df['Time'].values.reshape(-1,1))
         self.fraud_df = self.fraud_df.drop(['Time'],axis=1)
 
     def split_X_Y(self):
