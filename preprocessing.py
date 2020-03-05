@@ -27,7 +27,7 @@ class Preprocessor:
         return X_res, y_res
 
     def ApplyClusterCentroids(self, random_state, fraud_df_X, fraud_df_Y):
-        cluster_centroids = ClusterCentroids(random_state = 42)
+        cluster_centroids = ClusterCentroids(random_state = random_state)
         X_underSam, y_underSam = cluster_centroids.fit_resample(fraud_df_X, fraud_df_Y)
         return X_underSam, y_underSam
 
