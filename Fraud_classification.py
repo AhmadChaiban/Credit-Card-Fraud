@@ -80,7 +80,9 @@ if __name__ == '__main__':
     ## Separating the features from the labels
     fraud_df_X, fraud_df_Y = preprocessor.split_X_Y()
     ## Oversampling the data
+    print('Undersampling data...')
     X_res, y_res = preprocessor.ApplyClusterCentroids(42, fraud_df_X, fraud_df_Y)
+    print('done!')
     ## Shuffle data
     X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(X_res, y_res)
     ## Train test split
