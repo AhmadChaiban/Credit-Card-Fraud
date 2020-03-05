@@ -72,19 +72,14 @@ class NNClassifier:
 if __name__ == '__main__':
     ## Importing the data
     print("Reading from Database...")
-    fraud_df = pd.read_csv('creditcard.csv')
-    print(fraud_df.head())
-    preprocessor = Preprocessor(fraud_df)
-    ## Normalizing the data and deleting some irrelevant data like time
-    preprocessor.normalize()
-    ## Separating the features from the labels
-    fraud_df_X, fraud_df_Y = preprocessor.split_X_Y()
-    ## Oversampling the data
-    print('Undersampling data...')
-    X_res, y_res = preprocessor.ApplyClusterCentroids(42, fraud_df_X, fraud_df_Y)
-    print('done!')
-    ## Shuffle data
-    X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(X_res, y_res)
+    fraud_df_X = pd.read_csv('under-sampled-data.csv').drop(['Unnamed: 0'], axis = 1)
+    print(fraud_df_X.head())
+    fraud_df_Y = pd.read_csv('under-sampled-data-class.csv').drop(['Unnamed: 0'], axis = 1)
+    print(fraud_df_Y.head())
+    ## Creating the preprocessor
+    preprocessor = Preprocessor(fraud_df_X)
+    ## Reshuffling the data
+    X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(fraud_df_X, fraud_df_Y)
     ## Train test split
     print('Final features for training:')
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
@@ -96,7 +91,7 @@ if __name__ == '__main__':
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 5)
+    history = model.train(X_train, y_train, 30)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
