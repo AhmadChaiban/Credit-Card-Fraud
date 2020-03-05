@@ -57,7 +57,8 @@ class NNClassifier:
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
-        return y_pred_adjusted, accuracy_score(np.array(y_test).T, y_pred_adjusted)
+        return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
+               accuracy_score(np.array(y_test).T, np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T)
 
     def plot_loss(self, history):
         plt.plot(history.history['loss'])
@@ -85,19 +86,20 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(X_train.head())
     ## Defining the classifier
-    model = NNClassifier(30, 32, 20, 10, 2)
+    model = NNClassifier(30, 132, 120, 110, 2)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.01),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 30)
+    history = model.train(X_train, y_train, 100)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
     print(accuracy)
     ## confusion matrix
-    print(confusion_matrix(np.array(y_test).T, y_pred))
+    print(y_pred.shape, y_test.shape)
+    print(confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])))
     ## Plotting the recorded history of training and validation loss
     model.plot_loss(history)
     model.plot_accuracy(history)
