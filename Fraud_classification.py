@@ -42,7 +42,7 @@ class NNClassifier:
         history = self.model.fit(x = X_train,
                                  y = y_train,
                                  epochs = epochs,
-                                 batch_size = 128,
+                                 batch_size = 32,
                                  validation_split=0.2)
         return history
 
