@@ -8,6 +8,7 @@ from sklearn.metrics import accuracy_score
 from preprocessing import Preprocessor
 from tensorflow.keras import optimizers
 from sklearn.metrics import confusion_matrix
+from sklearn.manifold import TSNE
 
 class NNClassifier:
     def __init__(self, input, dense1, dense2, dense3, dense4):
@@ -77,28 +78,31 @@ if __name__ == '__main__':
     print(fraud_df_X.head())
     fraud_df_Y = pd.read_csv('under-sampled-data-class.csv').drop(['Unnamed: 0'], axis = 1)
     print(fraud_df_Y.head())
+    print('Applying t-SNE...')
+    ## Applying t-SNE to the data
+    X_res_embedded = TSNE(n_components = 2, random_state = 0).fit_transform(fraud_df_X)
+    print('done!')
     ## Creating the preprocessor
-    preprocessor = Preprocessor(fraud_df_X)
+    preprocessor = Preprocessor(X_res_embedded)
     ## Reshuffling the data
-    X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(fraud_df_X, fraud_df_Y)
+    X_res_shuffled, y_res_shuffled = preprocessor.Shuffle_data(X_res_embedded, fraud_df_Y)
     ## Train test split
     print('Final features for training:')
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
-    print(X_train.head())
+    print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(30, 132, 120, 110, 2)
+    model = NNClassifier(2, 532, 420, 310, 2)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.01),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 100)
+    history = model.train(X_train, y_train, 500)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
     print(accuracy)
     ## confusion matrix
-    print(y_pred.shape, y_test.shape)
     print(confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])))
     ## Plotting the recorded history of training and validation loss
     model.plot_loss(history)
