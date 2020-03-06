@@ -108,6 +108,9 @@ if __name__ == '__main__':
     print(f"Accuracy: {accuracy}")
     ## confusion matrix
     print(confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])))
+    ## Getting the true negatives, false positives, false negatives and false positives count
+    tn, fp, fn, tp = confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])).ravel()
+    print(f'True Negatives {tn}, False Positives {fp}, False Negatives {fn}, True Positives {tp}')
     ## Plotting the recorded history of training and validation loss
     model.plot_loss(history)
     model.plot_accuracy(history)
