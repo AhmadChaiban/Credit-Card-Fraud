@@ -61,7 +61,7 @@ class NNClassifier:
         print(np.array(y_test).T.shape)
         print(np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T.shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
-               accuracy_score(np.array(y_test).T, np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T)
+               accuracy_score(np.array(y_test), np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]))
 
     def plot_loss(self, history):
         plt.title('Loss')
