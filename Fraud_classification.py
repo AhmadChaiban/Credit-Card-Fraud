@@ -15,8 +15,8 @@ class NNClassifier:
         self.model = keras.Sequential([
             keras.layers.Dense(units = input, input_dim = input, activation = 'relu'),
             keras.layers.Dense(units=dense1, activation='relu'),
-            keras.layers.Dense(units=dense2, activation='relu'),
-            keras.layers.Dense(units=dense3, activation='relu'),
+            # keras.layers.Dense(units=dense2, activation='relu'),
+            # keras.layers.Dense(units=dense3, activation='relu'),
             keras.layers.Dense(units=dense4, activation='softmax')
         ])
         
@@ -42,7 +42,7 @@ class NNClassifier:
         history = self.model.fit(x = X_train,
                                  y = y_train,
                                  epochs = epochs,
-                                 batch_size = 32,
+                                 batch_size = 10,
                                  validation_split=0.2)
         return history
 
@@ -58,15 +58,19 @@ class NNClassifier:
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
+        print(np.array(y_test).T.shape)
+        print(np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T.shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
                accuracy_score(np.array(y_test).T, np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T)
 
     def plot_loss(self, history):
+        plt.title('Loss')
         plt.plot(history.history['loss'])
         plt.plot(history.history['val_loss'])
         plt.show()
 
     def plot_accuracy(self, history):
+        plt.title('Accuracy')
         plt.plot(history.history['accuracy'])
         plt.plot(history.history['val_accuracy'])
         plt.show()
@@ -91,17 +95,17 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(2, 532, 420, 310, 2)
+    model = NNClassifier(2, 32, 420, 310, 2)
     ## Compoling the model
-    model.compile(optimizer= optimizers.SGD(learning_rate = 0.01),
+    model.compile(optimizer= optimizers.SGD(learning_rate = 0.1),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 500)
+    history = model.train(X_train, y_train, 10)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
-    print(accuracy)
+    print(f"Accuracy: {accuracy}")
     ## confusion matrix
     print(confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])))
     ## Plotting the recorded history of training and validation loss
