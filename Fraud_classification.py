@@ -34,7 +34,6 @@ class NNClassifier:
 
     def train(self, X_train, y_train, epochs, batch_size, validation_split):
         X_train, y_train = self.convert_to_tensor(X_train, y_train)
-        print(X_train.shape)
         # data = self.data_set_creator(X_train, y_train, 1)
         # print(data.shape)
         history = self.model.fit(x = X_train,
@@ -56,8 +55,6 @@ class NNClassifier:
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
-        print(np.array(y_test).T.shape)
-        print(np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T.shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
                accuracy_score(np.array(y_test), np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]))
 
