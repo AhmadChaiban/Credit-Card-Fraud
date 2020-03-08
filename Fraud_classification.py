@@ -32,7 +32,7 @@ class NNClassifier:
                            loss= loss,
                            metrics= accuracy_metric)
 
-    def train(self, X_train, y_train, epochs):
+    def train(self, X_train, y_train, epochs, batch_size, validation_split):
         X_train, y_train = self.convert_to_tensor(X_train, y_train)
         print(X_train.shape)
         # data = self.data_set_creator(X_train, y_train, 1)
@@ -40,8 +40,8 @@ class NNClassifier:
         history = self.model.fit(x = X_train,
                                  y = y_train,
                                  epochs = epochs,
-                                 batch_size = 32,
-                                 validation_split=0.2)
+                                 batch_size = batch_size,
+                                 validation_split=validation_split)
         return history
 
     def prediction_adjustor(self, y_pred):
@@ -99,7 +99,7 @@ if __name__ == '__main__':
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 3000)
+    history = model.train(X_train, y_train, epochs = 3000,  batch_size = 32, validation_split = 0.2)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
