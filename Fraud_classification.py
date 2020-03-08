@@ -40,7 +40,7 @@ class NNClassifier:
         history = self.model.fit(x = X_train,
                                  y = y_train,
                                  epochs = epochs,
-                                 batch_size = 10,
+                                 batch_size = 32,
                                  validation_split=0.2)
         return history
 
@@ -93,13 +93,13 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(2, 15, 15, 1)
+    model = NNClassifier(2, 115, 115, 2)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.1),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, 10)
+    history = model.train(X_train, y_train, 500)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
