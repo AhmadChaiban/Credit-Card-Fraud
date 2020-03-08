@@ -93,7 +93,7 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(2, 155, 155, 2)
+    model = NNClassifier(2, 255, 255, 2)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.1),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
