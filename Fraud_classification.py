@@ -11,13 +11,11 @@ from sklearn.metrics import confusion_matrix
 from sklearn.manifold import TSNE
 
 class NNClassifier:
-    def __init__(self, input, dense1, dense2, dense3, dense4):
+    def __init__(self, input, dense1, dense2, dense4):
         self.model = keras.Sequential([
-            keras.layers.Dense(units = input, input_dim = input, activation = 'relu'),
-            keras.layers.Dense(units=dense1, activation='relu'),
-            # keras.layers.Dense(units=dense2, activation='relu'),
-            # keras.layers.Dense(units=dense3, activation='relu'),
-            keras.layers.Dense(units=dense4, activation='softmax')
+            keras.layers.Dense(units = dense1, input_dim = input, activation = 'relu'),
+            keras.layers.Dense(units=dense2, activation='relu'),
+            keras.layers.Dense(units=dense4, activation='sigmoid')
         ])
         
     # def data_set_creator(self, X_train, y_train, number_of_classes):
@@ -95,7 +93,7 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(2, 32, 420, 310, 2)
+    model = NNClassifier(2, 15, 15, 1)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.1),
                   loss = tf.losses.CategoricalCrossentropy(from_logits=True),
