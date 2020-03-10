@@ -93,10 +93,10 @@ if __name__ == '__main__':
     model = NNClassifier(30, 255, 255, 2)
     ## Compoling the model
     model.compile(optimizer= optimizers.SGD(learning_rate = 0.5),
-                  loss = tf.losses.CategoricalCrossentropy(from_logits=True),
+                  loss = tf.losses.MeanSquaredError(),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, epochs = 3000,  batch_size = 32, validation_split = 0.2)
+    history = model.train(X_train, y_train, epochs = 1000,  batch_size = 32, validation_split = 0.2)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
