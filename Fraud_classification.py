@@ -97,11 +97,11 @@ if __name__ == '__main__':
     ## Defining the classifier
     model = NNClassifier(30, 15, 15, 1)
     ## Compoling the model
-    model.compile(optimizer= optimizers.SGD(learning_rate = 0.001),
+    model.compile(optimizer= optimizers.SGD(learning_rate = 0.0001),
                   loss = tf.losses.MeanSquaredError(),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, epochs = 500,  batch_size = 32, validation_split = 0.2)
+    history = model.train(X_train, y_train, epochs = 1000,  batch_size = 32, validation_split = 0.2)
     ## Predicting on the test set
     y_pred, accuracy, y_pred_proba = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
