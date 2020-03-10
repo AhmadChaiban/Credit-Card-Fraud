@@ -4,10 +4,9 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve
 from preprocessing import Preprocessor
 from tensorflow.keras import optimizers
-from sklearn.metrics import confusion_matrix
 from sklearn.manifold import TSNE
 
 class NNClassifier:
@@ -46,17 +45,22 @@ class NNClassifier:
     def prediction_adjustor(self, y_pred):
         y_pred_new = []
         for i in range(len(y_pred)):
-            if y_pred[i][0] == 1:
+            if y_pred[i][0] >0.5:
                 y_pred_new.append(1)
             else:
                 y_pred_new.append(0)
+        print(y_pred_new)
         return y_pred_new
 
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
+        print(y_pred)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
+        print(y_pred_adjusted)
+        print(y_test)
+        print(y_test.shape, np.array(y_pred_adjusted).shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
-               accuracy_score(np.array(y_test), np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]))
+               accuracy_score(y_test, y_pred_adjusted)
 
     def plot_loss(self, history):
         plt.title('Loss')
@@ -90,13 +94,13 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X_res_shuffled, y_res_shuffled, test_size=0.20, random_state=42)
     print(pd.DataFrame(X_train).head())
     ## Defining the classifier
-    model = NNClassifier(30, 255, 255, 2)
+    model = NNClassifier(30, 15, 15, 1)
     ## Compoling the model
-    model.compile(optimizer= optimizers.SGD(learning_rate = 0.5),
+    model.compile(optimizer= optimizers.SGD(learning_rate = 0.001),
                   loss = tf.losses.MeanSquaredError(),
                   accuracy_metric = ['accuracy'] )
     ## Training and recording history
-    history = model.train(X_train, y_train, epochs = 1000,  batch_size = 32, validation_split = 0.2)
+    history = model.train(X_train, y_train, epochs = 500,  batch_size = 32, validation_split = 0.2)
     ## Predicting on the test set
     y_pred, accuracy = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
