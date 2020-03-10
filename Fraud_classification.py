@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, roc_auc_score
 from preprocessing import Preprocessor
 from tensorflow.keras import optimizers
 from sklearn.manifold import TSNE
@@ -65,7 +65,7 @@ class NNClassifier:
     def plot_roc_curve(self, y_test, y_pred):
         fpr, tpr, thresholds = roc_curve(y_test, y_pred)
         plt.plot(fpr, tpr)
-        plt.title('ROC Curve')
+        plt.title(f'ROC Curve with AUC { roc_auc_score(y_test, y_pred)}')
         plt.show()
 
     def plot_loss(self, history):
