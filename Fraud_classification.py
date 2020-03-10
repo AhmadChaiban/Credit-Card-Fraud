@@ -60,7 +60,13 @@ class NNClassifier:
         print(y_test)
         print(y_test.shape, np.array(y_pred_adjusted).shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
-               accuracy_score(y_test, y_pred_adjusted)
+               accuracy_score(y_test, y_pred_adjusted), y_pred
+
+    def plot_roc_curve(self, y_test, y_pred):
+        fpr, tpr, thresholds = roc_curve(y_test, y_pred)
+        plt.plot(fpr, tpr)
+        plt.title('ROC Curve')
+        plt.show()
 
     def plot_loss(self, history):
         plt.title('Loss')
@@ -102,7 +108,7 @@ if __name__ == '__main__':
     ## Training and recording history
     history = model.train(X_train, y_train, epochs = 500,  batch_size = 32, validation_split = 0.2)
     ## Predicting on the test set
-    y_pred, accuracy = model.predict(X_test, y_test)
+    y_pred, accuracy, y_pred_proba = model.predict(X_test, y_test)
     ## Showing the accuracy of the model
     print(f"Accuracy: {accuracy}")
     ## confusion matrix
@@ -113,6 +119,7 @@ if __name__ == '__main__':
     ## Plotting the recorded history of training and validation loss
     model.plot_loss(history)
     model.plot_accuracy(history)
+    model.plot_roc_curve(y_test, y_pred_proba)
 
 
 
