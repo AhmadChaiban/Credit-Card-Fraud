@@ -49,16 +49,11 @@ class NNClassifier:
                 y_pred_new.append(1)
             else:
                 y_pred_new.append(0)
-        print(y_pred_new)
         return y_pred_new
 
     def predict(self, X_test, y_test):
         y_pred = self.model.predict(X_test)
-        print(y_pred)
         y_pred_adjusted = self.prediction_adjustor(y_pred)
-        print(y_pred_adjusted)
-        print(y_test)
-        print(y_test.shape, np.array(y_pred_adjusted).shape)
         return np.array(y_pred_adjusted).reshape([len(y_pred_adjusted),1]).T, \
                accuracy_score(y_test, y_pred_adjusted), y_pred
 
@@ -117,9 +112,9 @@ if __name__ == '__main__':
     tn, fp, fn, tp = confusion_matrix(np.array(y_test).T.reshape([len(y_test),]), y_pred.reshape([len(y_pred.T),])).ravel()
     print(f'True Negatives {tn}, False Positives {fp}, False Negatives {fn}, True Positives {tp}')
     ## Plotting the recorded history of training and validation loss
+    model.plot_roc_curve(y_test, y_pred_proba)
     model.plot_loss(history)
     model.plot_accuracy(history)
-    model.plot_roc_curve(y_test, y_pred_proba)
 
 
 
