@@ -10,11 +10,11 @@ from tensorflow.keras import optimizers
 from sklearn.manifold import TSNE
 
 class NNClassifier:
-    def __init__(self, input, dense1, dense2, dense4):
+    def __init__(self, input, dense1, dense2, dense3):
         self.model = keras.Sequential([
             keras.layers.Dense(units = dense1, input_dim = input, activation = 'relu'),
             keras.layers.Dense(units=dense2, activation='relu'),
-            keras.layers.Dense(units=dense4, activation='sigmoid')
+            keras.layers.Dense(units=dense3, activation='sigmoid')
         ])
         
     # def data_set_creator(self, X_train, y_train, number_of_classes):
