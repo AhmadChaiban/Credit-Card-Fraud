@@ -68,9 +68,11 @@ The metric I used for accuracy was "accuracy_score". The following results could
 stable. There are often different results for the same parameter, but the training is relatively stable so far. 
 
 <p align = 'center'>
-<img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE_3.png' />
+<img src ='./Image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE_3.PNG'/>
 
-<img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_accuracy_figure_MAE_3.png' />
+<img src ="./Image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_accuracy_figure_MAE_3.PNG"/>
 
-<img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_Loss_figure_MAE_3.png' />
+<img src ='./Image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_Loss_figure_MAE_3.PNG'/>
+
+<img src ='./Image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_ROC_figure_MAE_3.PNG'/>
 </p>
