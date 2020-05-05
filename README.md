@@ -35,9 +35,10 @@ https://imbalanced-learn.readthedocs.io/en/stable/generated/imblearn.under_sampl
 
 After that, I visualized that data in 2D and 3D with t-SNE. It gavea really good idea about the separation of the data. The following could be seen:
 
-<center><img src ='./readMe_imgs/tsne2d.png' width="60%" /></center>
-
-<img src ='./readMe_imgs/tsne3d.png' />
+<p align = 'center'>
+<img src ='./readMe_imgs/tsne2d.png' width="60%"/>
+<img src ='./readMe_imgs/tsne3d.png'/>
+</p>
 
 ## Neural Network and Classification
 
@@ -66,10 +67,10 @@ history = model.train(X_train, y_train, epochs = 1000,  batch_size = 32, validat
 The metric I used for accuracy was "accuracy_score". The following results could be seen. I am still working on making the training more consistent and 
 stable. There are often different results for the same parameter, but the training is relatively stable so far. 
 
-<center>
+<p align = 'center'>
 <img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE_3.png' />
 
 <img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_accuracy_figure_MAE_3.png' />
 
 <img src ='./image_results/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_MAE/Undersampled(2, 15, 15, 1)_Batch_32_LR_0.001_Loss_figure_MAE_3.png' />
-</center>
+</p>
