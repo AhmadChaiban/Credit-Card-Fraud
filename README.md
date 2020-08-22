@@ -33,7 +33,7 @@ The main catch here was to balance that data in a way that encouraged the visual
 
 https://imbalanced-learn.readthedocs.io/en/stable/generated/imblearn.under_sampling.ClusterCentroids.html
 
-After that, I visualized that data in 2D and 3D with t-SNE. It gavea really good idea about the separation of the data. The following could be seen:
+After that, I visualized that data in 2D and 3D with t-SNE. It gave a really good idea about the separation of the data. The following could be seen:
 
 <p align = 'center'>
 <img src ='./readMe_imgs/tsne2d.png' width="60%"/>
